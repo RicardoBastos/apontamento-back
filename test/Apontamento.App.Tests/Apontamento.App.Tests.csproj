@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Apontamento.API\Apontamento.App.csproj" />
+    <ProjectReference Include="..\..\src\Apontamento.API\Apontamento.App.csproj" />
   </ItemGroup>
 
 </Project>

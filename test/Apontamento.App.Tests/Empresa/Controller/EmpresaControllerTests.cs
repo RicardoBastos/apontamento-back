@@ -1,4 +1,3 @@
-using Apontamento.App.Empresa.Controller;
 using System;
 using Xunit;
 
