@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Apontamento.App", "src\Apontamento.API\Apontamento.App.csproj", "{CF86FA61-DD40-4B53-A150-F5E15A501A33}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Apontamento.App.Tests", "test\Apontamento.App.Tests\Apontamento.App.Tests.csproj", "{73416764-F8EE-4640-860B-4945F5740344}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF86FA61-DD40-4B53-A150-F5E15A501A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF86FA61-DD40-4B53-A150-F5E15A501A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF86FA61-DD40-4B53-A150-F5E15A501A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF86FA61-DD40-4B53-A150-F5E15A501A33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73416764-F8EE-4640-860B-4945F5740344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73416764-F8EE-4640-860B-4945F5740344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73416764-F8EE-4640-860B-4945F5740344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73416764-F8EE-4640-860B-4945F5740344}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CABF5DC6-FF22-49F1-8930-72AE5234C525}
+	EndGlobalSection
+EndGlobal
