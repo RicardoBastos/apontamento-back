@@ -1,7 +1,9 @@
 ﻿using Apontamento.App.Empresa.Application.Interface;
+using Apontamento.App.Empresa.Domain;
 using Apontamento.App.Empresa.Domain.Command;
 using Apontamento.App.Empresa.Infrastructure.Repository.Interfaces;
 using Apontamento.App.Shared.Controller;
+using Apontamento.App.Usuario.Application.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -23,9 +25,9 @@ namespace Apontamento.App.Empresa.Api.Controller
        
 
         [HttpGet(Routes.Empresa.BuscarEmpresasPaginada)]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> Get([FromQuery]Paginacao paginacao, [FromQuery]string nome, [FromQuery]EnumStatus status = EnumStatus.Todos)
         {
-            var objRetorno = await _empresaDapperRepository.BuscarEmpresasPaginada();
+            var objRetorno = await _empresaDapperRepository.BuscarEmpresasPaginada(nome,status,paginacao);
             return Ok(objRetorno);
         }
 
@@ -38,10 +40,10 @@ namespace Apontamento.App.Empresa.Api.Controller
         }
 
 
-        [HttpPost(Routes.Empresa.AtualizarEmpresa)]
-        public async Task<IActionResult> Put(Guid Id, [FromBody]EmpresaAtualizarCmd empresa)
+        [HttpPut(Routes.Empresa.AtualizarEmpresa)]
+        public async Task<IActionResult> Put(Guid id, [FromBody]EmpresaAtualizarCmd empresa)
         {
-            empresa.SetId(Id);
+            empresa.SetId(id);
             var result = await _empresaApplication.AtualizarEmpresa(empresa);
             return UpdatedOrBad(result);
         }

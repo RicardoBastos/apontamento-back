@@ -36,6 +36,42 @@ namespace Apontamento.App.Migrations
 
                     b.ToTable("Empresa");
                 });
+
+            modelBuilder.Entity("Apontamento.App.Usuario.Domain.Usuario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuario");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("cb7cd87e-27ce-4bb7-979f-c201b5aff72f"),
+                            Ativo = true,
+                            Email = "admin@admin.com",
+                            Nome = "Administrador",
+                            Senha = "admin"
+                        });
+                });
 #pragma warning restore 612, 618
         }
     }

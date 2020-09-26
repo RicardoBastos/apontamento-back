@@ -9,6 +9,7 @@ namespace Apontamento.App.Shared.Domain
             Errors = new List<string>();
         }
 
+        public object Retorno { get; set; }
         public string Mensagem { get; set; }
         public List<string> Errors { get; set; }
 

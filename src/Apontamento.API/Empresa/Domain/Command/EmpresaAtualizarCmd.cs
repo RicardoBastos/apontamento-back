@@ -1,4 +1,5 @@
 ﻿using Apontamento.App.Empresa.Domain.Validations;
+using Apontamento.App.Empresa.Infrastructure.Repository.Interfaces;
 using FluentValidation.Results;
 using System;
 
@@ -18,9 +19,9 @@ namespace Apontamento.App.Empresa.Domain.Command
 
         }
 
-        public virtual bool IsValid()
+        public virtual bool IsValid(IEmpresaDapperRepository empresaDapperRepository)
         {
-            ValidationResult = new EmpresaSalvarValidation().Validate(this);
+            ValidationResult = new EmpresaSalvarValidation(empresaDapperRepository).Validate(this);
             return ValidationResult.IsValid;
         }
     }

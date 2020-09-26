@@ -11,7 +11,7 @@ namespace Apontamento.App.Empresa.Domain.Service
     public class EmpresaService : CommandHandler, IRequestHandler<EmpresaSalvarCmd, ValidationResult>, 
         IRequestHandler<EmpresaAtualizarCmd, ValidationResult>
     {
-        private readonly Empresa empresa = new Empresa();
+        private Empresa empresa;
 
         private readonly IEmpresaRepository _empresaRepository;
         public IEmpresaDapperRepository _empresaDapperRepository { get; }
@@ -20,11 +20,12 @@ namespace Apontamento.App.Empresa.Domain.Service
         {
             _empresaRepository = empresaRepository;
             _empresaDapperRepository = empresaDapperRepository;
+            empresa = new Empresa();
         }
 
         public async Task<ValidationResult> Handle(EmpresaSalvarCmd request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid(_empresaDapperRepository)) return request.ValidationResult;
 
             empresa.SetEmpresa(request.Id, request.Nome, request.Status);
             await _empresaRepository.Salvar(empresa);
@@ -34,7 +35,7 @@ namespace Apontamento.App.Empresa.Domain.Service
 
         public async Task<ValidationResult> Handle(EmpresaAtualizarCmd request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid(_empresaDapperRepository)) return request.ValidationResult;
 
             var retornoEmpresaQuery = await _empresaDapperRepository.BuscarEmpresaPorId(request.Id);
 

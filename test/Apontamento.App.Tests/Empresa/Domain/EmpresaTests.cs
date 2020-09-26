@@ -1,8 +1,3 @@
-using System;
-using Xunit;
-using FluentValidation.Results;
-using System.Linq;
-
 namespace Apontamento.App.Tests
 {
     public class EmpresaTests

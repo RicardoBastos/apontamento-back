@@ -25,8 +25,6 @@ namespace Apontamento.App.Shared.Infra
         public virtual void Atualizar(TEntity obj)
         {
             _dataContext.Entry(obj).State = EntityState.Modified;
-            _dataContext.Set<TEntity>().Attach(obj);
-
         }
 
         private bool _disposed = false;

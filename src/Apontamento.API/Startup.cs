@@ -14,9 +14,22 @@ using Microsoft.Data.SqlClient;
 using Apontamento.App.Empresa.Application;
 using Apontamento.App.Empresa.Domain.Command;
 using Apontamento.App.Empresa.Domain.Service;
-using Apontamento.App.Empresa.Application.Interface;
 using FluentValidation.Results;
 using Apontamento.App.Empresa.Infrastructure.Repository.Interfaces;
+using Apontamento.App.Usuario.Application.Interface;
+using Apontamento.App.Shared.Controller;
+using System.Text;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using Apontamento.App.Empresa.Application.Interface;
+using Apontamento.App.Usuario.Domain.Service;
+using Apontamento.App.Usuario.Domain.Command;
+using Apontamento.App.Usuario.Domain.Query;
+using Apontamento.App.Usuario.Infrastructure.Repository;
 
 namespace Apontamento.API
 {
@@ -42,6 +55,14 @@ namespace Apontamento.API
 
             services.AddCors();
 
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+
+
             services.AddMediatR(Assembly.Load("Apontamento.App"));
 
 
@@ -49,7 +70,37 @@ namespace Apontamento.API
             services.AddControllers();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(opt =>
+            {
+                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Apontamento", Version = "v1" });
+                opt.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Scheme = "bearer"
+                });
+                opt.OperationFilter<AuthenticationRequirementsOperationFilter>();
+            });
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+           .AddJwtBearer(x =>
+           {
+               x.RequireHttpsMetadata = false;
+               x.SaveToken = true;
+               x.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateIssuerSigningKey = true,
+                   IssuerSigningKey = new SymmetricSecurityKey(key),
+                   ValidateIssuer = false,
+                   ValidateAudience = false,
+                   ClockSkew = TimeSpan.Zero
+               };
+           });
 
             this.ConfigureInjectionDependecy(services);
         }
@@ -62,6 +113,12 @@ namespace Apontamento.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(x => x
+            .SetIsOriginAllowed(origin => true)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -72,6 +129,7 @@ namespace Apontamento.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -87,12 +145,39 @@ namespace Apontamento.API
             services.AddScoped<IEmpresaRepository, EmpresaRepository>();
             services.AddScoped<IEmpresaDapperRepository, EmpresaDapperRepository>();
 
+
+            services.AddScoped<IUsuarioDapperRepository, UsuarioDapperRepository>();
+
             services.AddScoped<IRequestHandler<EmpresaSalvarCmd, ValidationResult>, EmpresaService>();
             services.AddScoped<IRequestHandler<EmpresaAtualizarCmd, ValidationResult>, EmpresaService>();
 
 
-            services.AddScoped<IEmpresaApplication, EmpresaApplication>();
 
+            services.AddScoped<IRequestHandler<SessionUsuarioCmd, ValidationResult>, UsuarioService>();
+            services.AddScoped<IRequestHandler<SessionUsuarioTokenCmd, UsuarioQuery>, UsuarioService>();
+
+
+
+            services.AddScoped<IEmpresaApplication, EmpresaApplication>();
+            services.AddScoped<ISessionApplication, SessionApplication>();
+
+        }
+
+
+        public class AuthenticationRequirementsOperationFilter : IOperationFilter
+        {
+            public void Apply(OpenApiOperation operation, OperationFilterContext context)
+            {
+                if (operation.Security == null)
+                    operation.Security = new List<OpenApiSecurityRequirement>();
+
+
+                var scheme = new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearer" } };
+                operation.Security.Add(new OpenApiSecurityRequirement
+                {
+                    [scheme] = new List<string>()
+                });
+            }
         }
     }
 }

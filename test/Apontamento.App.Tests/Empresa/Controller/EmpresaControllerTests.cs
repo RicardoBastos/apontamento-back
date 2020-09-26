@@ -1,6 +1,3 @@
-using System;
-using Xunit;
-
 namespace Apontamento.App.Tests.Empresa.Controller
 {
     public class EmpresaControllerTests

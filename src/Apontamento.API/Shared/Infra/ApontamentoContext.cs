@@ -7,6 +7,7 @@ namespace Apontamento.App.Shared.Infra
     public class ApontamentoContext : DbContext
     {
         public DbSet<Empresa.Domain.Empresa> Empresa { get; set; }
+        public DbSet<Usuario.Domain.Usuario> Usuario { get; set; }
 
 
         public ApontamentoContext(DbContextOptions<ApontamentoContext> options) : base(options)
@@ -18,6 +19,7 @@ namespace Apontamento.App.Shared.Infra
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new EmpresaMap());
+            modelBuilder.ApplyConfiguration(new UsuarioMap());
         }
     }
 
