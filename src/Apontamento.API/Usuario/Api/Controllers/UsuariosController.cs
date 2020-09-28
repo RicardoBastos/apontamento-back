@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 namespace Apontamento.App.Usuario.Api.Controller
 {
 
-    [Route("api/[controller]")]
-    [ApiController]
     public class UsuariosController : BaseController
     {
         private readonly ISessionApplication _sessionApplication;
@@ -21,10 +19,10 @@ namespace Apontamento.App.Usuario.Api.Controller
 
       
         [AllowAnonymous]
-        [HttpPost("autenticar")]
-        public async Task<IActionResult> Autenticar([FromBody] SessionUsuarioCmd cmd)
+        [HttpPost(Routes.Usuario.Autenticar)]
+        public async Task<IActionResult> Autenticar([FromBody]SessionUsuarioCmd usuario)
         {
-            var result = await _sessionApplication.Autenticar(cmd);
+            var result = await _sessionApplication.Autenticar(usuario);
             return SuccessOrBad(result);
         }
 

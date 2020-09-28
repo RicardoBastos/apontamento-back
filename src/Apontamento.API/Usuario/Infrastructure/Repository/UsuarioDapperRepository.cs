@@ -29,7 +29,7 @@ namespace Apontamento.App.Usuario.Infrastructure.Repository
 
         public async Task<UsuarioQuery> BuscarUsuarioPorEmail(string email)
         {
-            var query = @"SELECT ID, NOME FROM USUARIO WHERE EMAIL = @EMAIL";
+            var query = @"SELECT ID, NOME, EMAIL FROM USUARIO WHERE EMAIL = @EMAIL";
             var resultado = await conn.QueryFirstOrDefaultAsync<UsuarioQuery>(query, new { EMAIL = email });
             return resultado;
         }

@@ -1,6 +1,8 @@
 ﻿using Apontamento.App.Shared.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Apontamento.App.Shared.Infra
@@ -42,10 +44,10 @@ namespace Apontamento.App.Shared.Infra
             GC.SuppressFinalize(this);
         }
 
-        //public async Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate)
-        //{
-        //    return await Context.Set<T>().Where(predicate).ToListAsync();
-        //}
+        public virtual TEntity Get(Expression<Func<TEntity, bool>> where)
+        {
+            return _dataContext.Set<TEntity>().FirstOrDefault(where);
+        }
 
     }
 }

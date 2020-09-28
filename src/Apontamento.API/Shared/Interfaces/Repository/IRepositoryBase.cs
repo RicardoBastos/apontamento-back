@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Apontamento.App.Shared.Interfaces.Repository
@@ -7,6 +8,9 @@ namespace Apontamento.App.Shared.Interfaces.Repository
     {
         Task Salvar(TEntity obj);
         void Atualizar(TEntity obj);
+        TEntity Get(Expression<Func<TEntity, bool>> where);
 
     }
 }
+
+
