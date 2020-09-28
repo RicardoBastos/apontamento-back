@@ -44,9 +44,9 @@ namespace Apontamento.App.Shared.Infra
             GC.SuppressFinalize(this);
         }
 
-        public virtual TEntity Get(Expression<Func<TEntity, bool>> where)
+        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where)
         {
-            return _dataContext.Set<TEntity>().FirstOrDefault(where);
+            return await _dataContext.Set<TEntity>().FirstOrDefaultAsync(where);
         }
 
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Apontamento.App.Usuario.Api.Controller
 {
 
-    public class UsuariosController : BaseController
+    public class UsuariosController : BaseApiController
     {
         private readonly ISessionApplication _sessionApplication;
 

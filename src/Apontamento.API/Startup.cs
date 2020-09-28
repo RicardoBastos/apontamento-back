@@ -12,8 +12,7 @@ using Apontamento.App.Empresa.Repository;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Apontamento.App.Empresa.Application;
-using Apontamento.App.Empresa.Domain.Command;
-using Apontamento.App.Empresa.Domain.Service;
+
 using FluentValidation.Results;
 using Apontamento.App.Empresa.Infrastructure.Repository.Interfaces;
 using Apontamento.App.Usuario.Application.Interface;
@@ -25,11 +24,17 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using Apontamento.App.Empresa.Application.Interface;
+
 using Apontamento.App.Usuario.Domain.Service;
 using Apontamento.App.Usuario.Domain.Command;
 using Apontamento.App.Usuario.Domain.Query;
 using Apontamento.App.Usuario.Infrastructure.Repository;
+using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using Apontamento.App.Shared.Domain;
+using System.Net;
+using System.Text.Json;
 
 namespace Apontamento.API
 {
@@ -63,8 +68,14 @@ namespace Apontamento.API
 
 
 
-            services.AddMediatR(Assembly.Load("Apontamento.App"));
+            
+            var assembly = Assembly.Load("Apontamento.App");
 
+            services.AddMediatR(assembly);
+            AssemblyScanner
+              .FindValidatorsInAssembly(assembly)
+              .ForEach(result => services.AddScoped(result.InterfaceType, result.ValidatorType));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 
             services.AddControllers();
@@ -105,6 +116,11 @@ namespace Apontamento.API
             this.ConfigureInjectionDependecy(services);
         }
 
+
+
+
+
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -132,6 +148,8 @@ namespace Apontamento.API
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -148,8 +166,8 @@ namespace Apontamento.API
 
             services.AddScoped<IUsuarioDapperRepository, UsuarioDapperRepository>();
 
-            services.AddScoped<IRequestHandler<EmpresaSalvarCmd, ValidationResult>, EmpresaService>();
-            services.AddScoped<IRequestHandler<EmpresaAtualizarCmd, ValidationResult>, EmpresaService>();
+            //services.AddScoped<IRequestHandler<EmpresaSalvarCmd, ValidationResult>, EmpresaService>();
+            //services.AddScoped<IRequestHandler<EmpresaAtualizarCmd, ValidationResult>, EmpresaService>();
 
 
 
@@ -158,7 +176,7 @@ namespace Apontamento.API
 
 
 
-            services.AddScoped<IEmpresaApplication, EmpresaApplication>();
+          //  services.AddScoped<IEmpresaApplication, EmpresaApplication>();
             services.AddScoped<ISessionApplication, SessionApplication>();
 
         }
@@ -177,6 +195,50 @@ namespace Apontamento.API
                 {
                     [scheme] = new List<string>()
                 });
+            }
+        }
+
+        public class ErrorHandlerMiddleware
+        {
+            private readonly RequestDelegate _next;
+
+            public ErrorHandlerMiddleware(RequestDelegate next)
+            {
+                _next = next;
+            }
+
+            public async Task Invoke(HttpContext context)
+            {
+                try
+                {
+                    await _next(context);
+                }
+                catch (Exception error)
+                {
+                    var response = context.Response;
+                    response.ContentType = "application/json";
+                    var responseModel = new Response<string>() { Succeeded = false, Message = error?.Message };
+
+                    switch (error)
+                    {
+                        case ValidationExceptionApi e:
+                            // custom application error
+                            response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            responseModel.Errors = e.Errors;
+                            break;
+                        case KeyNotFoundException e:
+                            // not found error
+                            response.StatusCode = (int)HttpStatusCode.NotFound;
+                            break;
+                        default:
+                            // unhandled error
+                            response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            break;
+                    }
+                    var result = JsonSerializer.Serialize(responseModel);
+
+                    await response.WriteAsync(result);
+                }
             }
         }
     }

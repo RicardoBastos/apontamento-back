@@ -1,30 +1,34 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Apontamento.App.Empresa.Domain.Command;
 using Apontamento.App.Empresa.Infrastructure.Repository.Interfaces;
 using FluentValidation;
 
 namespace Apontamento.App.Empresa.Domain.Validations
 {
-    public class EmpresaValidation<T>: AbstractValidator<T> where T : EmpresaCmd
+    public class EmpresaValidation<T>: AbstractValidator<T> where T : EmpresaCommand
     {
-    
+
         public void ValidarId()
         {
             RuleFor(empresa => empresa.Id)
-                .NotNull().NotEqual(Guid.Empty).WithMessage("O Id é obrigatório");
+                 .NotNull().NotEqual(Guid.Empty).WithMessage("O Id é obrigatório");
+
         }
 
-        public void ValidarNome(IEmpresaDapperRepository empresaDapperRepository)
+        public void ValidarNome()
         {
             RuleFor(p => p.Nome)
                 .NotEmpty().WithMessage("Nome é obrigatório")
                 .MaximumLength(100).WithMessage("Nome permitido até 100 caracteres");
 
-            RuleFor(cmdEmpresa => cmdEmpresa).MustAsync(async (cmdEmpresa, cancellation) => {
-                var existe =  await empresaDapperRepository.BuscarEmpresaPorNome(cmdEmpresa.Nome, cmdEmpresa.Id);
-                return existe == null;
-            }).WithMessage("Já existe uma empresa com esse nome");
         }
 
+
     }
+
 }
+
+
+

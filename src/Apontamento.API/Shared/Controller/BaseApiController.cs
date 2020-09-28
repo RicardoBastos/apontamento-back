@@ -1,14 +1,19 @@
 ﻿using Apontamento.App.Shared.Domain;
-using Microsoft.AspNetCore.Authorization;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Apontamento.App.Shared.Controller
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class BaseController : ControllerBase
+    public class BaseApiController : ControllerBase
     {
+        private IMediator _mediator;
+        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
+
+
         protected IActionResult CreatedOrBad(Result result)
         {
             if (result.hasErrors) return BadRequest(result);
