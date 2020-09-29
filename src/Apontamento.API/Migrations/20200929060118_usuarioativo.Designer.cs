@@ -4,14 +4,16 @@ using Apontamento.App.Shared.Infra;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Apontamento.App.Migrations
 {
     [DbContext(typeof(ApontamentoContext))]
-    partial class ApontamentoContextModelSnapshot : ModelSnapshot
+    [Migration("20200929060118_usuarioativo")]
+    partial class usuarioativo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

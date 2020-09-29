@@ -1,11 +1,8 @@
 ﻿
-using Apontamento.App.Empresa.Domain;
-using Apontamento.App.Empresa.Domain.Command;
+using Apontamento.App.Empresa.Application.Domain;
+using Apontamento.App.Empresa.Application.Domain.Command;
 using Apontamento.App.Empresa.Infrastructure.Repository.Interfaces;
 using Apontamento.App.Shared.Controller;
-using Apontamento.App.Shared.Domain;
-using Apontamento.App.Usuario.Application.Interface;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -26,8 +23,13 @@ namespace Apontamento.App.Empresa.Api.Controller
         [HttpGet(Routes.Empresa.BuscarEmpresasPaginada)]
         public async Task<IActionResult> Get([FromQuery]Paginacao paginacao, [FromQuery]string nome, [FromQuery]EnumStatus status = EnumStatus.Todos)
         {
-            var objRetorno = await _empresaDapperRepository.BuscarEmpresasPaginada(nome,status,paginacao);
-            return Ok(objRetorno);
+            return Ok(await _empresaDapperRepository.BuscarEmpresasPaginada(nome, status, paginacao));
+        }
+
+        [HttpGet(Routes.Empresa.BuscarEmpresaPorId)]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            return Ok(await _empresaDapperRepository.BuscarEmpresaPorId(id));
         }
 
 
@@ -38,13 +40,13 @@ namespace Apontamento.App.Empresa.Api.Controller
         }
 
 
-        //[HttpPut(Routes.Empresa.AtualizarEmpresa)]
-        //public async Task<IActionResult> Put(Guid id, [FromBody]EmpresaAtualizarCmd empresa)
-        //{
-        //    empresa.SetId(id);
-        //    var result = await _empresaApplication.AtualizarEmpresa(empresa);
-        //    return UpdatedOrBad(result);
-        //}
+
+        [HttpPost(Routes.Empresa.AtualizarEmpresa)]
+        public async Task<IActionResult> PutAsync(Guid id, [FromBody]EmpresaAtualizarCommand empresa)
+        {
+            empresa.SetId(id);
+            return Ok(await Mediator.Send(empresa));
+        }
 
     }
 }

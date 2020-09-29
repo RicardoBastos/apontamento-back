@@ -1,17 +1,17 @@
-﻿using Apontamento.App.Empresa.Domain;
-using Apontamento.App.Empresa.Domain.Query;
+﻿using Apontamento.App.Empresa.Application.Domain;
+using Apontamento.App.Empresa.Application.Domain.Query;
 using Apontamento.App.Shared.Controller;
+using Apontamento.App.Shared.Domain;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Apontamento.App.Empresa.Infrastructure.Repository.Interfaces
 {
     public interface IEmpresaDapperRepository
     {
-        Task<RetornoGrid<EmpresaQuery>> BuscarEmpresasPaginada(string nome, EnumStatus status, Paginacao paginacao);
+        Task<Response<List<EmpresaQuery>>> BuscarEmpresasPaginada(string nome, EnumStatus status, Paginacao paginacao);
+        Task<Response<EmpresaQuery>> BuscarEmpresaPorId(Guid id);
 
-        Task<EmpresaQuery> BuscarEmpresaPorId(Guid id);
-
-        Task<EmpresaQuery> BuscarEmpresaPorNome(string nome, Guid id);
     }
 }

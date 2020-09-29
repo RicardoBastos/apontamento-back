@@ -7,6 +7,7 @@
             public const string BuscarEmpresasPaginada = "listar";
             public const string SalvarEmpresa = "salvar";
             public const string AtualizarEmpresa = "atualizar/{id}";
+            public const string BuscarEmpresaPorId = "buscar/{id}";
 
         }
 

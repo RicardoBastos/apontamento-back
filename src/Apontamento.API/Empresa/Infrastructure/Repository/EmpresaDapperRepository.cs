@@ -1,9 +1,11 @@
-﻿using Apontamento.App.Empresa.Domain;
-using Apontamento.App.Empresa.Domain.Query;
+﻿using Apontamento.App.Empresa.Application.Domain;
+using Apontamento.App.Empresa.Application.Domain.Query;
 using Apontamento.App.Empresa.Infrastructure.Repository.Interfaces;
 using Apontamento.App.Shared.Controller;
+using Apontamento.App.Shared.Domain;
 using Dapper;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
 using System.Linq;
@@ -23,21 +25,17 @@ namespace Apontamento.App.Empresa.Repository
             query = new StringBuilder();
         }
 
-        public async Task<EmpresaQuery> BuscarEmpresaPorId(Guid id)
+        public async Task<Response<EmpresaQuery>> BuscarEmpresaPorId(Guid id)
         {
-            return await conn.QueryFirstOrDefaultAsync<EmpresaQuery>("SELECT E.ID, E.NOME, E.STATUS FROM EMPRESA E WHERE ID = @ID", param: new { ID = id });
+            var empresaQuery = await conn.QueryFirstOrDefaultAsync<EmpresaQuery>("SELECT E.ID, E.NOME, E.STATUS FROM EMPRESA E WHERE ID = @ID", param: new { ID = id });
+            return new Response<EmpresaQuery>(empresaQuery);
         }
 
-        public async Task<EmpresaQuery> BuscarEmpresaPorNome(string nome, Guid id)
-        {
-            return await conn.QueryFirstOrDefaultAsync<EmpresaQuery>(
-                "SELECT E.ID, E.NOME, E.STATUS FROM EMPRESA E WHERE E.NOME = @NOME AND E.ID <> @ID", param: new { NOME = nome, ID = id });
-        }
 
-        public async Task<RetornoGrid<EmpresaQuery>> BuscarEmpresasPaginada(string nome, EnumStatus status, Paginacao paginacao)
+        public async Task<Response<List<EmpresaQuery>>> BuscarEmpresasPaginada(string nome, EnumStatus status, Paginacao paginacao)
         {
             dynamic param = new ExpandoObject();
-            var retorno = new RetornoGrid<EmpresaQuery>();
+            var retorno = new Response<List<EmpresaQuery>>();
 
             param.nome = nome;
             param.status = status;
@@ -78,7 +76,6 @@ namespace Apontamento.App.Empresa.Repository
             }
 
             return retorno;
-
 
         }
 

@@ -1,10 +1,5 @@
-﻿
-
-using Apontamento.App.Shared.Domain;
-using FluentValidation;
-using FluentValidation.Results;
+﻿using FluentValidation;
 using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -12,8 +7,6 @@ using System.Threading.Tasks;
 
 namespace Apontamento.App.Shared.Controller
 {
-
-
     public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
        where TRequest : IRequest<TResponse>
     {
@@ -37,25 +30,6 @@ namespace Apontamento.App.Shared.Controller
             }
             return await next();
         }
-    }
-
-
-    public class ValidationExceptionApi : Exception
-    {
-        public ValidationExceptionApi() : base("Erros de validação")
-        {
-            Errors = new List<string>();
-        }
-        public List<string> Errors { get; }
-        public ValidationExceptionApi(IEnumerable<ValidationFailure> failures)
-            : this()
-        {
-            foreach (var failure in failures)
-            {
-                Errors.Add(failure.ErrorMessage);
-            }
-        }
-
     }
 
 }
