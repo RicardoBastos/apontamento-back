@@ -1,4 +1,4 @@
-﻿using Apontamento.App.Usuario.Application.Domain.Query;
+﻿using Apontamento.App.Usuario.Application.Query;
 using System.Threading.Tasks;
 
 namespace Apontamento.App.Usuario.Infrastructure.Repository.Interfaces

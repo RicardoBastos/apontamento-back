@@ -1,4 +1,4 @@
-﻿using Apontamento.App.Usuario.Application.Domain.Query;
+﻿using Apontamento.App.Usuario.Application.Query;
 using Apontamento.App.Usuario.Infrastructure.Repository.Interfaces;
 using Dapper;
 using Microsoft.Extensions.Configuration;

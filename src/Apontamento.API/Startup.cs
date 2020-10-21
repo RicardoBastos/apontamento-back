@@ -28,9 +28,9 @@ using Apontamento.App.Shared.Domain;
 using System.Net;
 using System.Text.Json;
 using Apontamento.App.Usuario.Infrastructure.Repository.Interfaces;
-using Apontamento.App.Usuario.Application.Domain.Command;
-using Apontamento.App.Usuario.Application.Domain.Query;
-using Apontamento.App.Usuario.Domain.Application.Handler;
+using Apontamento.App.Usuario.Application.Command;
+using Apontamento.App.Usuario.Application.Query;
+using Apontamento.App.Usuario.Application.Handler;
 
 namespace Apontamento.API
 {
@@ -68,9 +68,11 @@ namespace Apontamento.API
             var assembly = Assembly.Load("Apontamento.App");
 
             services.AddMediatR(assembly);
-            AssemblyScanner
-              .FindValidatorsInAssembly(assembly)
-              .ForEach(result => services.AddScoped(result.InterfaceType, result.ValidatorType));
+
+            var teste = AssemblyScanner.FindValidatorsInAssembly(assembly);
+
+            teste.ForEach(result => services.AddScoped(result.InterfaceType, result.ValidatorType));
+
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 

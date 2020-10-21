@@ -2,7 +2,7 @@
 
 namespace Apontamento.App.Usuario.Infrastructure.Repository.Interfaces
 {
-    public interface IUsuarioRepository : IRepositoryBase<Application.Domain.Usuario>
+    public interface IUsuarioRepository : IRepositoryBase<Domain.Usuario>
     {
 
     }

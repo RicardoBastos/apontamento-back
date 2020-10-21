@@ -1,5 +1,5 @@
 ﻿using Apontamento.App.Empresa.Application.Domain;
-using Apontamento.App.Empresa.Application.Domain.Query;
+using Apontamento.App.Empresa.Application.Query;
 using Apontamento.App.Shared.Controller;
 using Apontamento.App.Shared.Domain;
 using System;

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Usuario\Application\Domain\Validation\SessionValidation.cs" />
+    <Compile Remove="Usuario\Application\Validation\SessionValidation.cs" />
   </ItemGroup>
 
   <ItemGroup>

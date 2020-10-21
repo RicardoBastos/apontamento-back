@@ -1,5 +1,5 @@
 ﻿using Apontamento.App.Shared.Controller;
-using Apontamento.App.Usuario.Application.Domain.Command;
+using Apontamento.App.Usuario.Application.Command;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

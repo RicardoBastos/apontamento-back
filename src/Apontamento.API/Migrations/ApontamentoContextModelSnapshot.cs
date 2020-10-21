@@ -19,7 +19,7 @@ namespace Apontamento.App.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Apontamento.App.Empresa.Application.Domain.Empresa", b =>
+            modelBuilder.Entity("Apontamento.App.Empresa.Domain.Empresa", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,7 +37,31 @@ namespace Apontamento.App.Migrations
                     b.ToTable("Empresa");
                 });
 
-            modelBuilder.Entity("Apontamento.App.Usuario.Application.Domain.Usuario", b =>
+            modelBuilder.Entity("Apontamento.App.Projeto.Domain.Projeto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EmpresaId")
+                        .HasColumnName("EmpresaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Horas")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmpresaId");
+
+                    b.ToTable("Projeto");
+                });
+
+            modelBuilder.Entity("Apontamento.App.Usuario.Domain.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,12 +89,21 @@ namespace Apontamento.App.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8aaa6ec8-66eb-43bc-aa7f-e1b4866ab0a0"),
+                            Id = new Guid("f932d8b6-ff9b-4f2a-aeda-fb4408e549fe"),
                             Email = "admin@admin.com",
                             Nome = "Administrador",
                             Senha = "admin",
                             Status = true
                         });
+                });
+
+            modelBuilder.Entity("Apontamento.App.Projeto.Domain.Projeto", b =>
+                {
+                    b.HasOne("Apontamento.App.Empresa.Domain.Empresa", "Empresa")
+                        .WithMany("Projetos")
+                        .HasForeignKey("EmpresaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

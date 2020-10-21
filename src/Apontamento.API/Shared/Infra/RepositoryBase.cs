@@ -23,9 +23,10 @@ namespace Apontamento.App.Shared.Infra
         }
 
 
-        public virtual void Atualizar(TEntity obj)
+        public virtual async Task Atualizar(TEntity obj)
         {
-            _dataContext.Entry(obj).State = EntityState.Modified;
+            await Task.FromResult(_dataContext.Entry(obj).State = EntityState.Modified);
+            
         }
 
         private bool _disposed = false;

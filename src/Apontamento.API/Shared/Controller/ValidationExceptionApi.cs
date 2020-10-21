@@ -6,7 +6,7 @@ namespace Apontamento.App.Shared.Controller
 {
     public class ValidationExceptionApi : Exception
     {
-        public ValidationExceptionApi() : base("Erros de validação")
+        public ValidationExceptionApi() : base("Erro de validação")
         {
             Errors = new List<string>();
         }

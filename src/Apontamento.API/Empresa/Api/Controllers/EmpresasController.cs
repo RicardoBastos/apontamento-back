@@ -1,6 +1,6 @@
 ﻿
 using Apontamento.App.Empresa.Application.Domain;
-using Apontamento.App.Empresa.Application.Domain.Command;
+using Apontamento.App.Empresa.Application.Command;
 using Apontamento.App.Empresa.Infrastructure.Repository.Interfaces;
 using Apontamento.App.Shared.Controller;
 using Microsoft.AspNetCore.Mvc;
@@ -36,12 +36,12 @@ namespace Apontamento.App.Empresa.Api.Controller
         [HttpPost(Routes.Empresa.SalvarEmpresa)]
         public async Task<IActionResult> PostAsync([FromBody]EmpresaSalvarCommand empresa)
         {
-            return Ok(await Mediator.Send(empresa));
+            return SuccessOrBad(await Mediator.Send(empresa));
         }
 
 
 
-        [HttpPost(Routes.Empresa.AtualizarEmpresa)]
+        [HttpPut(Routes.Empresa.AtualizarEmpresa)]
         public async Task<IActionResult> PutAsync(Guid id, [FromBody]EmpresaAtualizarCommand empresa)
         {
             empresa.SetId(id);

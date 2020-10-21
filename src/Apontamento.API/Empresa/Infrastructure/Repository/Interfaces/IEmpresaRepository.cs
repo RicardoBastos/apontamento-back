@@ -2,7 +2,7 @@
 
 namespace Apontamento.App.Empresa.Infrastructure.Repository.Interfaces
 {
-    public interface IEmpresaRepository : IRepositoryBase<Application.Domain.Empresa>
+    public interface IEmpresaRepository : IRepositoryBase<Domain.Empresa>
     {
 
     }

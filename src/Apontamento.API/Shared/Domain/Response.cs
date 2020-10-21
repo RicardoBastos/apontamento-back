@@ -7,6 +7,7 @@ namespace Apontamento.App.Shared.Domain
     {
         public Response()
         {
+            Errors = new List<string>();
         }
 
         public Response(IEnumerable<ValidationFailure> failures)
@@ -23,11 +24,15 @@ namespace Apontamento.App.Shared.Domain
             Message = message;
             Data = data;
         }
-        public Response(bool succeeded, string message)
+        public Response<T> ResponseMessage(string message, bool succeeded = true)
         {
             Succeeded = succeeded;
             Message = message;
+            return this;
         }
+
+
+
         public bool Succeeded { get; set; }
         public string Message { get; set; }
         public List<string> Errors { get; set; }

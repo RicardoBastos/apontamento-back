@@ -4,9 +4,9 @@ using System;
 
 namespace Apontamento.App.Shared.Infra.Mapping
 {
-    public class UsuarioMap : IEntityTypeConfiguration<Usuario.Application.Domain.Usuario>
+    public class UsuarioMap : IEntityTypeConfiguration<Usuario.Domain.Usuario>
     {
-        public void Configure(EntityTypeBuilder<Usuario.Application.Domain.Usuario> builder)
+        public void Configure(EntityTypeBuilder<Usuario.Domain.Usuario> builder)
         {
             builder.ToTable("Usuario");
             builder.Property(t => t.Id).IsRequired();
@@ -15,7 +15,7 @@ namespace Apontamento.App.Shared.Infra.Mapping
             builder.Property(t => t.Senha).IsRequired().HasColumnType("varchar(100)");
             builder.Property(t => t.Status).IsRequired().HasColumnType("bit");
 
-            var usuario = new Usuario.Application.Domain.Usuario();
+            var usuario = new Usuario.Domain.Usuario();
             usuario.SetUsuario(Guid.NewGuid(), "Administrador", "admin@admin.com", "admin", true);
 
             builder.HasData(usuario);

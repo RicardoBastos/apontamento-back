@@ -11,6 +11,15 @@
 
         }
 
+        public static class Projeto
+        {
+            public const string BuscarProjetosPaginada = "listar";
+            public const string SalvarProjeto = "salvar";
+            public const string AtualizarProjeto = "atualizar/{id}";
+            public const string BuscarProjetoPorId = "buscar/{id}";
+
+        }
+
         public static class Usuario
         {
             public const string Autenticar = "autenticar";
