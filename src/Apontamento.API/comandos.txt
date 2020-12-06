@@ -1,0 +1,7 @@
+﻿﻿docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Ricardo@123' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Ricardo@123" -p 1433:1433 --name apontamento -h apontamento -d mcr.microsoft.com/mssql/server:2019-latest
+
+PMC
+Install-Package Microsoft.EntityFrameworkCore.Tools
+Add-Migration InitialCreate
+Update-Database

@@ -69,9 +69,9 @@ namespace Apontamento.API
 
             services.AddMediatR(assembly);
 
-            var teste = AssemblyScanner.FindValidatorsInAssembly(assembly);
+            var validacoes = AssemblyScanner.FindValidatorsInAssembly(assembly);
 
-            teste.ForEach(result => services.AddScoped(result.InterfaceType, result.ValidatorType));
+            validacoes.ForEach(result => services.AddScoped(result.InterfaceType, result.ValidatorType));
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
