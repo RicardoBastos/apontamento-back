@@ -1,4 +1,4 @@
-namespace Apontamento.App.Tests.Empresa.Controller
+namespace Apontamento.Tests.Empresa.Controller
 {
     public class EmpresaControllerTests
     {

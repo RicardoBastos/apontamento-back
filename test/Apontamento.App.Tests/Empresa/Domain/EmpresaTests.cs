@@ -1,12 +1,12 @@
-namespace Apontamento.App.Tests
+namespace Apontamento.Tests
 {
     public class EmpresaTests
     {
-        //private readonly App.Empresa.Domain.Empresa empresa;
+        //private readonly Empresa.Core.Empresa empresa;
 
         //public EmpresaTests()
         //{
-        //    empresa = new App.Empresa.Domain.Empresa();
+        //    empresa = new Empresa.Core.Empresa();
         //}
 
         //[Fact(DisplayName = "RetornaInvalidoPorId")]
